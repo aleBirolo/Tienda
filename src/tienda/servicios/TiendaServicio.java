@@ -49,21 +49,38 @@ public class TiendaServicio {
             while (opc != 'z'){
                 switch(opc){
                 case 'a':
-                    ps.imprimirProductos();
+                    ps.imprimirProductos(ps.listarProductosPorNombre());
                     break;
                 case 'b':
+                    ps.imprimirProductos(ps.listarProductosPorNombreYPrecio());
                     break;
                 case 'c':
+                    ps.imprimirProductos(ps.listarProductosPorRangoDePrecio(120, 202));
                     break;
                 case 'd':
+                    ps.imprimirProductos(ps.listarProductosPorComodinNombre("portatil"));
                     break;
                 case 'e':
+                    ps.imprimirProductos(ps.buscarProductoMasBarato());
                     break;
                 case 'f':
+                    ps.crearProducto();
+                    ps.imprimirProductos();
                     break;
                 case 'g':
+                    fs.crearFabricante();
+                    fs.imprimirFabricantes();
                     break;
                 case 'h':
+                    int codigo;
+                    float precio;
+                    System.out.print("Ingrese codigo de producto a modificar: ");
+                    codigo = teclado.nextInt();
+                    
+                    System.out.print("Ingrese el nuevo precio: ");
+                    precio = teclado.nextFloat();
+                    ps.modificarPrecioProducto(codigo, precio);
+                    ps.imprimirProductos(ps.buscarProductoPorCodigo(codigo));
                     break;
                 case 'i':
                     fs.imprimirFabricantes();

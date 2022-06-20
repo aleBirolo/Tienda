@@ -29,10 +29,12 @@ public final class ProductoDAO extends DAO {
                 throw new Exception("Debe indicar un producto");
             
             String sql = "INSERT INTO producto (codigo, nombre, precio, codigo_fabricante) "
-                         + "VALUES ('" + producto.getCodigo()+ "' , '" 
-                         + producto.getNombre()+ "' , '"
-                         + producto.getPrecio()+ "' , '"
-                         + producto.getCodigoFabricante() + ");";
+                         + "VALUES (" 
+                                     + producto.getCodigo() 
+                                     + " , '" + producto.getNombre()+ " '"
+                                     + " , "+ producto.getPrecio()
+                                     + " , "+ producto.getCodigoFabricante() 
+                                 +" );";
             
             System.out.println(sql);
             insertarModificarEliminar(sql);
@@ -50,8 +52,10 @@ public final class ProductoDAO extends DAO {
                 throw new Exception("Debe indicar el producto a modificar");
             
             String sql = "UPDATE producto SET "
-                         + " nombre = '" + producto.getNombre()+ "' , precio= '" + producto.getPrecio()+ "' , codigo_fabricante = " + 
-                                 producto.getCodigoFabricante() + " WHERE codigo = '" + producto.getCodigo() + "'";
+                         + " nombre = '" + producto.getNombre()
+                    + "' , precio= '" + producto.getPrecio()
+                    + "' , codigo_fabricante = " +producto.getCodigoFabricante() 
+                    + " WHERE codigo = '" + producto.getCodigo() + "'";
              insertarModificarEliminar(sql);
         } catch (Exception e) {
             throw e;
@@ -92,6 +96,33 @@ public final class ProductoDAO extends DAO {
         }
     }
     
+    public Collection<Producto> buscarProductoMasBarato() throws Exception{
+        try {
+            String sql = "select * " +
+                         "from tienda.producto " +
+                         "where precio = (select MIN(precio) from tienda.producto);";
+            consultarBase(sql);
+            Producto producto = null;
+            Collection<Producto> productos = new ArrayList();
+            
+            while (resultado.next()){
+                producto = new Producto();
+                producto.setCodigo(resultado.getInt(1));
+                producto.setNombre(resultado.getString(2));
+                producto.setPrecio(resultado.getFloat(3));
+                producto.setCodigoFabricante(resultado.getInt(4));
+                productos.add(producto);
+            }
+            
+            desconectarBase(); 
+            return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            desconectarBase();
+            throw e;
+        }
+    }
+    
     public Collection<Producto> listarProductos() throws Exception{
         try {
             String sql = "SELECT * FROM producto ";
@@ -117,4 +148,103 @@ public final class ProductoDAO extends DAO {
         }
     }
     
+    public Collection<Producto> listarProductosPorNombre() throws Exception{
+        try {
+            String sql = "SELECT nombre FROM producto ";
+            consultarBase(sql);
+            Producto producto = null;
+            Collection<Producto> productos = new ArrayList();
+            
+            while (resultado.next()){
+                producto = new Producto();
+                //producto.setCodigo(resultado.getInt(1));
+                producto.setNombre(resultado.getString(1));
+                //producto.setPrecio(resultado.getFloat(3));
+                //producto.setCodigoFabricante(resultado.getInt(4));
+                productos.add(producto);
+            }
+            
+            desconectarBase(); 
+            return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            desconectarBase();
+            throw e;
+        }
+    }
+    
+    public Collection<Producto> listarProductosPorNombreYPrecio() throws Exception{
+        try {
+            String sql = "SELECT nombre, precio FROM producto ";
+            consultarBase(sql);
+            Producto producto = null;
+            Collection<Producto> productos = new ArrayList();
+            
+            while (resultado.next()){
+                producto = new Producto();
+                //producto.setCodigo(resultado.getInt(1));
+                producto.setNombre(resultado.getString(1));
+                producto.setPrecio(resultado.getFloat(2));
+                //producto.setCodigoFabricante(resultado.getInt(4));
+                productos.add(producto);
+            }
+            
+            desconectarBase(); 
+            return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            desconectarBase();
+            throw e;
+        }
+    }
+    
+    public Collection<Producto> listarProductosPorRangoPrecio(int inf, int sup) throws Exception{
+        try {
+            String sql = "SELECT * FROM producto WHERE precio >= '" + inf + "' and precio <= '"+sup +"';";
+            consultarBase(sql);
+            Producto producto = null;
+            Collection<Producto> productos = new ArrayList();
+            
+            while (resultado.next()){
+                producto = new Producto();
+                producto.setCodigo(resultado.getInt(1));
+                producto.setNombre(resultado.getString(2));
+                producto.setPrecio(resultado.getFloat(3));
+                producto.setCodigoFabricante(resultado.getInt(4));
+                productos.add(producto);
+            }
+            
+            desconectarBase(); 
+            return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            desconectarBase();
+            throw e;
+        }
+    }
+    
+    public Collection<Producto> listarProductosPorComodinNombre(String nombre) throws Exception{
+        try {
+            String sql = "SELECT * FROM producto WHERE nombre like '%" + nombre  +"%';";
+            consultarBase(sql);
+            Producto producto = null;
+            Collection<Producto> productos = new ArrayList();
+            
+            while (resultado.next()){
+                producto = new Producto();
+                producto.setCodigo(resultado.getInt(1));
+                producto.setNombre(resultado.getString(2));
+                producto.setPrecio(resultado.getFloat(3));
+                producto.setCodigoFabricante(resultado.getInt(4));
+                productos.add(producto);
+            }
+            
+            desconectarBase(); 
+            return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            desconectarBase();
+            throw e;
+        }
+    }
 }

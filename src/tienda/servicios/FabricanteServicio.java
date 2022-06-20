@@ -6,6 +6,7 @@
 package tienda.servicios;
 
 import java.util.Collection;
+import java.util.Scanner;
 import tienda.entidades.Fabricante;
 import tienda.persistencia.FabricanteDAO;
 
@@ -14,7 +15,8 @@ import tienda.persistencia.FabricanteDAO;
  * @author Alejandro Birolo
  */
 public class FabricanteServicio {
-
+    
+    private Scanner teclado;
     private FabricanteDAO dao;
 
     public FabricanteServicio() {
@@ -31,6 +33,41 @@ public class FabricanteServicio {
             
             if (codigo == 0 ) {
                 throw new Exception("Debe indicar un codigo");
+            }
+            
+            if (buscarFabricantePorCodigo(codigo) != null) {
+                throw new Exception("Ya existe un fabricante con el codigo  indicado " + codigo);
+            }
+
+            //Creamos el Fabricante
+            Fabricante fabricante = new Fabricante();
+            fabricante.setCodigo(codigo);
+            fabricante.setNombre(nombre);
+            dao.guardarFabricante(fabricante);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public void crearFabricante() throws Exception {
+
+        try {
+            int codigo;
+            String nombre;
+            
+            teclado = new Scanner(System.in).useDelimiter("\n");
+            
+            System.out.print("Ingrese codigo de fabricante: ");
+            codigo= teclado.nextInt();
+            if (codigo == 0 ) {
+                throw new Exception("Debe indicar un codigo");
+            }
+            
+            System.out.print("Ingrese nombre de fabricante: ");
+            nombre = teclado.next();
+            //Validamos
+            if (nombre == null || nombre.trim().isEmpty()) {
+                throw new Exception("Debe un nombre de fabricante");
             }
             
             if (buscarFabricantePorCodigo(codigo) != null) {

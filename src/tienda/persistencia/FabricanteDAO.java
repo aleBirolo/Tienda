@@ -23,7 +23,10 @@ public final class FabricanteDAO extends DAO {
                 }
 
                 String sql = "INSERT INTO fabricante (codigo, nombre)"
-                             + "VALUES ('" + fabricante.getCodigo() + "', '" + fabricante.getNombre()+ "' );";
+                             + "VALUES (" 
+                                          + fabricante.getCodigo() 
+                                          + " , '" + fabricante.getNombre() + " ' "
+                                     + ");";
 
                 insertarModificarEliminar(sql);
             } catch (Exception e) {
